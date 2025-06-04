@@ -1,19 +1,103 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>My Blog</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <h1>Blogs :</h1>
-    {% for r in response %}
-        Title :{{r.title}}<br>
-        Content :{{r.content}}<br>
-        {{r.created_at}}<br><hr>
-    {% endfor %}
-    <a href="{% url 'add_blog' %}">
-        <button>Add post</button>
-    </a>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-blog"></i>
+                <h1>My Blog</h1>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">About</a>
+                <a href="#" class="nav-link">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h2>Welcome to My Blog</h2>
+                <p>Discover amazing stories, insights, and thoughts shared by our community</p>
+            </section>
+
+            <!-- Blog Posts -->
+            <section class="blog-section">
+                <div class="section-header">
+                    <h3>Latest Posts</h3>
+                    <a href="{% url 'add_blog' %}" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        New Post
+                    </a>
+                </div>
+
+                <div class="blog-grid">
+                    {% for r in response %}
+                    <article class="blog-card">
+                        <div class="blog-card-header">
+                            <div class="author-info">
+                                <div class="avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="author-details">
+                                    <span class="author-name">{{r.username}}</span>
+                                    <span class="post-date">{{r.created_at|date:"M d, Y g:i A"}}</span>                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="blog-card-content">
+                            <h4 class="blog-title">{{r.title}}</h4>
+                            <p class="blog-excerpt">{{r.content}}</p>
+                        </div>
+                        
+                        <div class="blog-card-footer">
+                            <div class="blog-actions">
+                                <button class="action-btn">
+                                    <i class="fas fa-heart"></i>
+                                    <span>Like</span>
+                                </button>
+                                <button class="action-btn">
+                                    <i class="fas fa-comment"></i>
+                                    <span>Comment</span>
+                                </button>
+                                <button class="action-btn">
+                                    <i class="fas fa-share"></i>
+                                    <span>Share</span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 My Blog. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

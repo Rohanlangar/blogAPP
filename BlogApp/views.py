@@ -14,10 +14,18 @@ def add_blog_post(request):
         userid=request.session.get('userid')
         title=request.POST.get('title')
         content=request.POST.get('content')
+
+        user=supabase.auth.get_user()
+        username=user.user.user_metadata.get('display_name')
+        request.session['username']=username
+
+        username=request.session.get('username')
+
         data={
             'title':title,
             'content':content,
-            'user_id':userid
+            'user_id':userid,
+            'username':username
         }
         try:
             response = supabase.table("blogs").insert(data).execute()
@@ -37,8 +45,20 @@ def signup(request):
           email=request.POST.get('email')
           password=request.POST.get('password')
           username=request.POST.get('username')
-          supabase.auth.sign_up({'email':email,'password':password,'Display name':username})
-          return response
+          response = supabase.auth.sign_up({
+            "email": email,
+            "password": password
+        })
+
+          user = response.user
+          user_id = user.id
+
+          supabase.auth.update_user({
+            "data": {
+                "display_name": username
+            }
+        })
+          return render(request,'signin.html')
      
      return render(request,'signup.html')
 
@@ -48,8 +68,9 @@ def signin(request):
           password=request.POST.get('password')
           response=supabase.auth.sign_in_with_password({'email':email,'password':password})
           request.session['userid']=response.user.id
-          response=supabase.table('blogs').select('title','content','created_at').execute()
+          response=supabase.table('blogs').select('title','content','created_at','username').execute()
           data=response.data
+          
           return render(request,'home.html',{'response':data})
      return render(request,'signin.html')
           

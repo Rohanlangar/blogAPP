@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('add_blog/', views.add_blog_post, name='add_blog'),
@@ -23,4 +25,10 @@ urlpatterns = [
     path('',views.signin,name='signin'),
     path('signup/',views.signup,name='signup')
 ]
+
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 
