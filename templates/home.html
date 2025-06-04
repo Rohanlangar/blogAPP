@@ -9,7 +9,11 @@
     <h1>Blogs :</h1>
     {% for r in response %}
         Title :{{r.title}}<br>
-        Content :{{r.content}}
+        Content :{{r.content}}<br>
+        {{r.created_at}}<br><hr>
     {% endfor %}
+    <a href="{% url 'add_blog' %}">
+        <button>Add post</button>
+    </a>
 </body>
 </html>
