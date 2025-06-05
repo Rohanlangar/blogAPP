@@ -15,12 +15,13 @@
         <div class="container">
             <div class="nav-brand">
                 <i class="fas fa-blog"></i>
-                <h1>My Blog</h1>
+                <h1>BlogSpace</h1>
             </div>
             <nav class="nav-links">
                 <a href="#" class="nav-link">Home</a>
                 <a href="#" class="nav-link">About</a>
                 <a href="#" class="nav-link">Contact</a>
+                <a href="{% url 'logout' %}" class="nav-link">Logout</a>
             </nav>
         </div>
     </header>
@@ -65,10 +66,14 @@
                         
                         <div class="blog-card-footer">
                             <div class="blog-actions">
+                                <form action="{% url 'likecount' r.id %}" method="POST">
+                                    {% csrf_token %}
                                 <button class="action-btn">
                                     <i class="fas fa-heart"></i>
-                                    <span>Like</span>
+                                    <span>Like {{r.Likes}}</span>
                                 </button>
+                                </a>
+                                </form>
                                 <button class="action-btn">
                                     <i class="fas fa-comment"></i>
                                     <span>Comment</span>

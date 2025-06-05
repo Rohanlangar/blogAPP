@@ -3,14 +3,612 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Create New Post - BlogSpace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .blog-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .floating-label {
+            position: relative;
+        }
+
+        .floating-label input,
+        .floating-label textarea {
+            width: 100%;
+            padding: 1.2rem 1rem 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .floating-label textarea {
+            min-height: 200px;
+            line-height: 1.6;
+        }
+
+        .floating-label label {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            font-size: 1rem;
+            color: #999;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background: transparent;
+        }
+
+        .floating-label input:focus,
+        .floating-label input:valid,
+        .floating-label textarea:focus,
+        .floating-label textarea:valid {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .floating-label input:focus + label,
+        .floating-label input:valid + label,
+        .floating-label textarea:focus + label,
+        .floating-label textarea:valid + label {
+            top: 0.2rem;
+            font-size: 0.8rem;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        /* Character Counter */
+        .char-counter {
+            position: absolute;
+            bottom: -1.5rem;
+            right: 0;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .char-counter.warning {
+            color: #ffa502;
+        }
+
+        .char-counter.danger {
+            color: #ff4757;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 2px dashed #e0e0e0;
+            display: none;
+        }
+
+        .preview-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .preview-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        .preview-meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .preview-content {
+            color: #444;
+            line-height: 1.7;
+            font-size: 1rem;
+            white-space: pre-wrap;
+        }
+
+        /* Success/Error Messages */
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .message.error {
+            background: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+
+        .message.success {
+            background: #efe;
+            color: #363;
+            border: 1px solid #cfc;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .blog-container {
+                padding: 2rem 1.5rem;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .floating-label textarea {
+                min-height: 150px;
+            }
+        }
+
+        /* Auto-save indicator */
+        .auto-save {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(40, 167, 69, 0.9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .auto-save.show {
+            opacity: 1;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            padding: 0.5rem;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .toolbar-btn:hover {
+            background: #e9ecef;
+        }
+
+        .toolbar-btn.active {
+            background: #667eea;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <form action="{% url 'add_blog' %}" method="POST">
-        {% csrf_token %}
-        Title :<input type="text" name="title">
-        Content :<input type="text" name="content">
-        <input type="submit" value="submit">
-    </form>
+    <div class="blog-container">
+        <div class="header">
+            <div class="logo">BlogSpace</div>
+            <h1>Create New Post</h1>
+            <p class="subtitle">Share your thoughts and ideas with the world</p>
+        </div>
+
+        <div class="message" id="messageContainer"></div>
+
+        <form action="{% url 'add_blog' %}" method="POST" id="blogForm">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <div class="floating-label">
+                    <input type="text" name="title" id="title" required maxlength="200">
+                    <label for="title">Blog Title</label>
+                </div>
+                <div class="char-counter" id="titleCounter">0/200</div>
+            </div>
+
+            <div class="form-group">
+                <div class="toolbar">
+                    <button type="button" class="toolbar-btn" onclick="togglePreview()">👁️ Preview</button>
+                    <button type="button" class="toolbar-btn" onclick="clearForm()">🗑️ Clear</button>
+                    <button type="button" class="toolbar-btn" onclick="saveDraft()">💾 Save Draft</button>
+                </div>
+                <div class="floating-label">
+                    <textarea name="content" id="content" required maxlength="10000" placeholder=" "></textarea>
+                    <label for="content">Blog Content</label>
+                </div>
+                <div class="char-counter" id="contentCounter">0/10000</div>
+            </div>
+
+            <div class="preview-section" id="previewSection">
+                <div class="preview-header">
+                    <h2 class="preview-title" id="previewTitle">Your Blog Title</h2>
+                    <div class="preview-meta">
+                        <span id="previewDate"></span> • <span id="wordCount">0 words</span>
+                    </div>
+                </div>
+                <div class="preview-content" id="previewContent">Your blog content will appear here...</div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="goBack()">
+                    ← Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span id="btnText">Publish Post</span>
+                    <div class="loading" id="loading" style="display: none;"></div>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="auto-save" id="autoSave">Draft saved automatically</div>
+
+    <script>
+        const titleInput = document.getElementById('title');
+        const contentInput = document.getElementById('content');
+        const titleCounter = document.getElementById('titleCounter');
+        const contentCounter = document.getElementById('contentCounter');
+        const previewSection = document.getElementById('previewSection');
+        const previewTitle = document.getElementById('previewTitle');
+        const previewContent = document.getElementById('previewContent');
+        const previewDate = document.getElementById('previewDate');
+        const wordCount = document.getElementById('wordCount');
+        const form = document.getElementById('blogForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const loading = document.getElementById('loading');
+        const messageContainer = document.getElementById('messageContainer');
+        const autoSave = document.getElementById('autoSave');
+
+        let previewMode = false;
+        let autoSaveTimeout;
+
+        // Set current date
+        previewDate.textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Character counters
+        titleInput.addEventListener('input', function() {
+            const count = this.value.length;
+            titleCounter.textContent = `${count}/200`;
+            
+            if (count > 180) titleCounter.className = 'char-counter danger';
+            else if (count > 150) titleCounter.className = 'char-counter warning';
+            else titleCounter.className = 'char-counter';
+            
+            updatePreview();
+            scheduleAutoSave();
+        });
+
+        contentInput.addEventListener('input', function() {
+            const count = this.value.length;
+            contentCounter.textContent = `${count}/10000`;
+            
+            if (count > 9000) contentCounter.className = 'char-counter danger';
+            else if (count > 8000) contentCounter.className = 'char-counter warning';
+            else contentCounter.className = 'char-counter';
+            
+            updatePreview();
+            scheduleAutoSave();
+        });
+
+        // Update preview
+        function updatePreview() {
+            const title = titleInput.value || 'Your Blog Title';
+            const content = contentInput.value || 'Your blog content will appear here...';
+            
+            previewTitle.textContent = title;
+            previewContent.textContent = content;
+            
+            // Word count
+            const words = content.trim() ? content.trim().split(/\s+/).length : 0;
+            wordCount.textContent = `${words} words`;
+        }
+
+        // Toggle preview
+        function togglePreview() {
+            previewMode = !previewMode;
+            previewSection.classList.toggle('active', previewMode);
+            
+            const toolbar = document.querySelector('.toolbar-btn');
+            if (previewMode) {
+                toolbar.classList.add('active');
+                updatePreview();
+            } else {
+                toolbar.classList.remove('active');
+            }
+        }
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            if (!titleInput.value.trim() || !contentInput.value.trim()) {
+                e.preventDefault();
+                showMessage('Please fill in both title and content fields.', 'error');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            loading.style.display = 'inline-block';
+        });
+
+        // Auto-save functionality
+        function scheduleAutoSave() {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(saveDraft, 3000); // Auto-save after 3 seconds of inactivity
+        }
+
+        function saveDraft() {
+            if (!titleInput.value && !contentInput.value) return;
+            
+            // Save to localStorage (or send to backend in real implementation)
+            const draft = {
+                title: titleInput.value,
+                content: contentInput.value,
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                // In a real app, you'd send this to your backend
+                console.log('Draft saved:', draft);
+                showAutoSave();
+            } catch (error) {
+                console.error('Failed to save draft:', error);
+            }
+        }
+
+        function showAutoSave() {
+            autoSave.classList.add('show');
+            setTimeout(() => {
+                autoSave.classList.remove('show');
+            }, 2000);
+        }
+
+        // Clear form
+        function clearForm() {
+            if (confirm('Are you sure you want to clear all content? This action cannot be undone.')) {
+                titleInput.value = '';
+                contentInput.value = '';
+                titleCounter.textContent = '0/200';
+                contentCounter.textContent = '0/10000';
+                titleCounter.className = 'char-counter';
+                contentCounter.className = 'char-counter';
+                updatePreview();
+            }
+        }
+
+        // Go back
+        function goBack() {
+            if (titleInput.value || contentInput.value) {
+                if (confirm('You have unsaved changes. Are you sure you want to leave?')) {
+                    window.history.back();
+                }
+            } else {
+                window.history.back();
+            }
+        }
+
+        // Show messages
+        function showMessage(message, type) {
+            messageContainer.textContent = message;
+            messageContainer.className = `message ${type}`;
+            messageContainer.style.display = 'block';
+            
+            setTimeout(() => {
+                messageContainer.style.display = 'none';
+            }, 5000);
+        }
+
+        // Enhanced floating labels
+        document.querySelectorAll('.floating-label input, .floating-label textarea').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.01)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === 's') {
+                    e.preventDefault();
+                    saveDraft();
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    form.submit();
+                } else if (e.key === 'p') {
+                    e.preventDefault();
+                    togglePreview();
+                }
+            }
+        });
+
+        // Initialize
+        updatePreview();
+    </script>
 </body>
 </html>

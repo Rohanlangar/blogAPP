@@ -3,16 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Registration - BlogSpace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .registration-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+            font-size: 2.2rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-group input:valid {
+            border-color: #28a745;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Floating label effect */
+        .floating-label {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .floating-label input {
+            padding: 1.2rem 1rem 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            outline: none;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .floating-label label {
+            position: absolute;
+            left: 1rem;
+            top: 1rem;
+            font-size: 1rem;
+            color: #999;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background: transparent;
+        }
+
+        .floating-label input:focus,
+        .floating-label input:valid {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .floating-label input:focus + label,
+        .floating-label input:valid + label {
+            top: 0.2rem;
+            font-size: 0.8rem;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .footer-text a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-text a:hover {
+            color: #764ba2;
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .registration-container {
+                padding: 2rem 1.5rem;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+        }
+
+        /* Additional styling for better UX */
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .floating-label {
+            flex: 1;
+        }
+
+        .password-strength {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak { background: #ff4757; width: 33%; }
+        .strength-medium { background: #ffa502; width: 66%; }
+        .strength-strong { background: #2ed573; width: 100%; }
+    </style>
 </head>
 <body>
-    <h1>Registration</h1>
-    <form action="{% url 'signup' %}" method="POST">
-        {% csrf_token %}
-        Email :<input type="email" name="email">
-        Password :<input type="password" name="password">
-        Usrrname :<input type="text" name="username">
-        <input type="submit">
-    </form>
+    <div class="registration-container">
+        <div class="logo">BlogSpace</div>
+        
+        <h1>Registration</h1>
+        
+        <form action="{% url 'signup' %}" method="POST" id="registrationForm">
+            {% csrf_token %}
+            
+            <div class="floating-label">
+                <input type="email" name="email" id="email" required>
+                <label for="email">Email Address</label>
+            </div>
+            
+            <div class="floating-label">
+                <input type="text" name="username" id="username" required>
+                <label for="username">Username</label>
+            </div>
+            
+            <div class="floating-label">
+                <input type="password" name="password" id="password" required>
+                <label for="password">Password</label>
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="strengthBar"></div>
+                </div>
+            </div>
+            
+            <div class="floating-label">
+                <input type="password" name="confirm_password" id="confirm_password" required>
+                <label for="confirm_password">Confirm Password</label>
+            </div>
+            
+            <button type="submit" class="submit-btn">Create Account</button>
+        </form>
+        
+        <div class="footer-text">
+            Already have an account? <a href="#">Sign in here</a>
+        </div>
+    </div>
+
+    <script>
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('strengthBar');
+        
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            const strength = calculatePasswordStrength(password);
+            
+            strengthBar.className = 'password-strength-bar';
+            if (strength < 3) {
+                strengthBar.classList.add('strength-weak');
+            } else if (strength < 5) {
+                strengthBar.classList.add('strength-medium');
+            } else {
+                strengthBar.classList.add('strength-strong');
+            }
+        });
+        
+        function calculatePasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            return strength;
+        }
+        
+        // Form validation
+        const form = document.getElementById('registrationForm');
+        const confirmPassword = document.getElementById('confirm_password');
+        
+        form.addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPass = confirmPassword.value;
+            
+            if (password !== confirmPass) {
+                e.preventDefault();
+                confirmPassword.style.borderColor = '#ff4757';
+                confirmPassword.focus();
+                
+                // Reset border color after 3 seconds
+                setTimeout(() => {
+                    confirmPassword.style.borderColor = '#e0e0e0';
+                }, 3000);
+            }
+        });
+        
+        // Enhanced floating label functionality
+        document.querySelectorAll('.floating-label input').forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.classList.remove('has-value');
+                } else {
+                    this.classList.add('has-value');
+                }
+            });
+        });
+        
+        // Smooth animations on focus
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
 </body>
 </html>

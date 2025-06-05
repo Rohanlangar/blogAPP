@@ -23,7 +23,11 @@ urlpatterns = [
     path('add_blog/', views.add_blog_post, name='add_blog'),
     # path('',views.home,name='home'),
     path('',views.signin,name='signin'),
-    path('signup/',views.signup,name='signup')
+    path('signup/',views.signup,name='signup'),
+    path('home',views.home,name='home'),
+    path('likecount/<int:blog_id>/', views.likecount, name='likecount'),
+    path('logout',views.logout,name='logout')
+
 ]
 
 
