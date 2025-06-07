@@ -26,7 +26,10 @@ urlpatterns = [
     path('signup/',views.signup,name='signup'),
     path('home',views.home,name='home'),
     path('likecount/<int:blog_id>/', views.likecount, name='likecount'),
-    path('logout',views.logout,name='logout')
+    path('logout',views.logout,name='logout'),
+    path('show_post/<int:blog_id>/', views.show_post, name='show_post'),
+    path('add_comment/<int:blog_id>/',views.add_comment,name='add_comment'),
+    path('profile',views.profile,name='profile')
 
 ]
 

@@ -14,11 +14,7 @@ def add_blog_post(request):
         userid=request.session.get('userid')
         title=request.POST.get('title')
         content=request.POST.get('content')
-
-        user=supabase.auth.get_user()
-        username=user.user.user_metadata.get('display_name')
-        request.session['username']=username
-
+    
         username=request.session.get('username')
 
         data={
@@ -68,6 +64,9 @@ def signin(request):
           password=request.POST.get('password')
           response=supabase.auth.sign_in_with_password({'email':email,'password':password})
           request.session['userid']=response.user.id
+          user=supabase.auth.get_user()
+          username=user.user.user_metadata.get('display_name')
+          request.session['username']=username
           return redirect('home')
           
      return render(request,'signin.html')
@@ -85,9 +84,55 @@ def likecount(request,blog_id):
         return redirect('home')
      
 def logout(request):
-    response=supabase.auth.sign_out()
+    supabase.auth.sign_out()
     request.session.flush()
     return redirect('signin')
+
+def show_post(request,blog_id):
+    if request.method=='POST':
+        response=supabase.table('blogs').select('title','content','created_at','username','Likes','id').eq('id',blog_id).execute()
+        data=response.data
+
+        commentsobject=supabase.table('comments').select('comment','user').eq('blog_id',blog_id).execute()
+        return render(request,'comments.html',{'response':data,'comments':commentsobject.data,'blog_id':blog_id})
+    if request.method=='GET':
+        response=supabase.table('blogs').select('title','content','created_at','username','Likes','id').eq('id',blog_id).execute()
+        data=response.data
+
+        commentsobject=supabase.table('comments').select('comment','user').eq('blog_id',blog_id).execute()
+        return render(request,'comments.html',{'response':data,'comments':commentsobject.data,'blog_id':blog_id})
+
+def add_comment(request,blog_id):
+    comment=request.POST.get('comment')
+    username=request.session.get('username')
+    data={
+        'blog_id':blog_id,
+        'comment':comment,
+        'user':username
+    }
+    supabase.table('comments').insert(data).execute()
+    return redirect('show_post',blog_id)
+
+def profile(request):
+    user=supabase.auth.get_user()
+    email=user.user.email
+    username=request.session.get('username')
+    print(username)
+    userid=request.session.get('userid')
+    info={
+        'email':email,
+        'username':username
+    }
+
+    blogs=supabase.table('blogs').select('title','content','created_at','Likes','id').eq('user_id',userid).execute()
+    return render(request,'profile.html',{'info':info,'blogs':blogs.data})
+
+
+
+
+     
+
+
      
           
           
