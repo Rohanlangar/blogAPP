@@ -532,6 +532,14 @@
             transition: var(--transition-fast);
             text-decoration: none;
         }
+         .tag {
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
 
         .empty-action:hover {
             transform: translateY(-2px);
@@ -750,7 +758,9 @@
                             <div class="blog-content">
                                 {{ blog.content|truncatewords:25 }}
                             </div>
-                            
+                            {% for tag in blog.tags %}
+                        <span class="tag">{{ tag }}</span>
+                    {% endfor %}
                             <div class="blog-footer">
                                 <div class="blog-stats">
                                     <div class="stat-item">

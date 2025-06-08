@@ -1293,7 +1293,7 @@
                     <i class="fas fa-compass"></i>
                     <span>Discover</span>
                 </a>
-                <a href="#" class="nav-link">
+                <a href="{% url 'show_bookmarks'%}" class="nav-link">
                     <i class="fas fa-bookmark"></i>
                     <span>Bookmarks</span>
                 </a>
@@ -1427,18 +1427,25 @@
                             <div class="author-info">
                                 <h4 class="author-name">{{r.username}}</h4>
                                 <div class="post-meta">
-                                    <time class="post-date">{{r.created_at|date:"M d, Y"}}</time>
+                                    <time class="post-date">{{ r.created_at|date:'M d, Y' }}</time>
                                     <span class="meta-separator">•</span>
                                     <span class="read-time">5 min read</span>
                                 </div>
                             </div>
                         </div>
                         
+                        
                         <div class="post-actions">
-                            <input type="checkbox" id="bookmark-{{r.id}}" class="bookmark-checkbox">
-                            <label for="bookmark-{{r.id}}" class="action-btn bookmark-btn" title="Bookmark">
-                                <i class="far fa-bookmark"></i>
-                            </label>
+                            <form action="{% url 'bookmark' r.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="checkbox" id="bookmark-{{r.id}}" name="bookmark" class="bookmark-checkbox" onchange="this.form.submit()">
+                                    <label for="bookmark-{{r.id}}" class="action-btn bookmark-btn" title="Bookmark">
+                                        <i class="far fa-bookmark"></i>
+                                    </label>
+                                </form>
+
+
+
                             
                             <input type="checkbox" id="more-{{r.id}}" class="more-checkbox">
                             <label for="more-{{r.id}}" class="action-btn more-btn" title="More options">
@@ -1464,9 +1471,9 @@
                         </div>
                         
                         <div class="post-tags">
-                            <span class="tag">Writing</span>
-                            <span class="tag">Inspiration</span>
-                            <span class="tag">Lifestyle</span>
+                            {% for tag in r.tags %}
+                <span class="tag">{{ tag }}</span>
+            {% endfor %}
                         </div>
                     </div>
                     

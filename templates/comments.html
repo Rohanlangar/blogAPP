@@ -549,6 +549,15 @@
             transition: var(--transition-fast);
         }
 
+         .tag {
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
         .comment-action-btn:hover {
             background: var(--gray-200);
             color: var(--gray-700);
@@ -750,7 +759,9 @@
             <!-- Post Content -->
             <article class="post-content">
                 <div class="post-text">{{r.content}}</div>
-                
+                {% for tag in r.tags %}
+                <span class="tag">{{ tag }}</span>
+            {% endfor %}
                 <div class="post-actions">
                     <button class="action-btn like-btn">
                         <i class="far fa-heart"></i>

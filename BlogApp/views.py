@@ -9,11 +9,13 @@ SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY, options=ClientOptions(schema="public"))
 supabase_auth = create_client(SUPABASE_URL, SUPABASE_KEY, options=ClientOptions(schema="auth"))
 
+
 def add_blog_post(request):
     if request.method=='POST':
         userid=request.session.get('userid')
         title=request.POST.get('title')
         content=request.POST.get('content')
+        tags=request.POST.get('tags')
     
         username=request.session.get('username')
 
@@ -21,7 +23,8 @@ def add_blog_post(request):
             'title':title,
             'content':content,
             'user_id':userid,
-            'username':username
+            'username':username,
+            'tags':tags
         }
         try:
             response = supabase.table("blogs").insert(data).execute()
@@ -32,9 +35,14 @@ def add_blog_post(request):
     return render(request,'blog.html')
 
 def home(request):
-    response=supabase.table('blogs').select('title','content','created_at','username','Likes','id').execute()
-    data=response.data
-    return render(request,'home.html',{'response':data})
+    response = supabase.table('blogs').select('title', 'content', 'created_at', 'username', 'Likes', 'id', 'tags').execute()
+    blogs = response.data
+    for blog in blogs:
+        tags_str = blog.get('tags', '')
+        blog['tags'] = [tag.strip() for tag in tags_str.split(',')] if tags_str else []
+
+    return render(request, 'home.html', {'response': blogs})
+
 
 def signup(request):
      if request.method=='POST':
@@ -90,17 +98,23 @@ def logout(request):
 
 def show_post(request,blog_id):
     if request.method=='POST':
-        response=supabase.table('blogs').select('title','content','created_at','username','Likes','id').eq('id',blog_id).execute()
-        data=response.data
+        response=supabase.table('blogs').select('title','content','created_at','username','Likes','id','tags').eq('id',blog_id).execute()
+        blogs=response.data
+        for blog in blogs:
+            tags_str = blog.get('tags', '')
+            blog['tags'] = [tag.strip() for tag in tags_str.split(',')] if tags_str else []
 
         commentsobject=supabase.table('comments').select('comment','user').eq('blog_id',blog_id).execute()
-        return render(request,'comments.html',{'response':data,'comments':commentsobject.data,'blog_id':blog_id})
+        return render(request,'comments.html',{'response':blogs,'comments':commentsobject.data,'blog_id':blog_id})
     if request.method=='GET':
-        response=supabase.table('blogs').select('title','content','created_at','username','Likes','id').eq('id',blog_id).execute()
-        data=response.data
+        response=supabase.table('blogs').select('title','content','created_at','username','Likes','id','tags').eq('id',blog_id).execute()
+        blogs=response.data
+        for blog in blogs:
+            tags_str = blog.get('tags', '')
+            blog['tags'] = [tag.strip() for tag in tags_str.split(',')] if tags_str else []
 
         commentsobject=supabase.table('comments').select('comment','user').eq('blog_id',blog_id).execute()
-        return render(request,'comments.html',{'response':data,'comments':commentsobject.data,'blog_id':blog_id})
+        return render(request,'comments.html',{'response':blogs,'comments':commentsobject.data,'blog_id':blog_id})
 
 def add_comment(request,blog_id):
     comment=request.POST.get('comment')
@@ -124,13 +138,43 @@ def profile(request):
         'username':username
     }
 
-    blogs=supabase.table('blogs').select('title','content','created_at','Likes','id').eq('user_id',userid).execute()
-    return render(request,'profile.html',{'info':info,'blogs':blogs.data})
+    response=supabase.table('blogs').select('title','content','created_at','Likes','id','tags').eq('user_id',userid).execute()
+    blogs=response.data
+    for blog in blogs:
+        tags_str = blog.get('tags', '')
+        blog['tags'] = [tag.strip() for tag in tags_str.split(',')] if tags_str else []
+    return render(request,'profile.html',{'info':info,'blogs':blogs})
 
 
+def bookmark(request,blog_id):
+    response=supabase.table('blogs').select('*').eq('id',blog_id).execute()
+    responsedata=response.data[0]
+    userid=request.session.get('userid')
+    data={
+        'id':blog_id,
+        'user_id':userid,
+        'title':responsedata['title'],
+        'content':responsedata['content'],
+        'created_at':responsedata['created_at'],
+        'username':responsedata['username'],
+        'Likes':responsedata['Likes'],
+        'tags':responsedata['tags']
+    }
+    supabase.table('bookmark_blogs').insert(data).execute()
+    return redirect('show_bookmarks')
 
+def show_bookmarks(request):
+    userid=request.session.get('userid')
+    response=supabase.table('bookmark_blogs').select('title','content','created_at','Likes','id','tags').eq('user_id',userid).execute()
+    blogs=response.data
+    for blog in blogs:
+        tags_str = blog.get('tags', '')
+        blog['tags'] = [tag.strip() for tag in tags_str.split(',')] if tags_str else []
+    return render(request,'bookmark.html',{'response':blogs})
 
-     
+def remove_bookmark(request,blog_id):
+    supabase.table('bookmark_blogs').delete().eq('id',blog_id).execute()
+    return redirect('show_bookmarks')
 
 
      

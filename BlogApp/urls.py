@@ -29,7 +29,11 @@ urlpatterns = [
     path('logout',views.logout,name='logout'),
     path('show_post/<int:blog_id>/', views.show_post, name='show_post'),
     path('add_comment/<int:blog_id>/',views.add_comment,name='add_comment'),
-    path('profile',views.profile,name='profile')
+    path('profile',views.profile,name='profile'),
+    path('bookmark/<int:blog_id>/',views.bookmark,name='bookmark'),
+    path('show_bookmarks',views.show_bookmarks,name='show_bookmarks'),
+    path('remove_bookmark/<int:blog_id>/',views.remove_bookmark,name='remove_bookmark'),
+
 
 ]
 

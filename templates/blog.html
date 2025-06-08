@@ -3,194 +3,518 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Post - BlogSpace</title>
+    <title>Create New Story - InkWell</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        /* ===== RESET AND BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            /* Colors */
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary-color: #f59e0b;
+            --accent-color: #ec4899;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+            
+            /* Neutrals */
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            
+            /* Typography */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-display: 'Playfair Display', Georgia, serif;
+            
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            --space-3xl: 4rem;
+            
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease-in-out;
+            --transition-normal: 0.3s ease-in-out;
+            --transition-slow: 0.5s ease-in-out;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--gray-50);
             min-height: 100vh;
-            padding: 20px;
         }
 
-        .blog-container {
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition-normal);
+        }
+
+        .nav-container {
+            max-width: 1200px;
             margin: 0 auto;
-            animation: slideIn 0.6s ease-out;
+            padding: 0 var(--space-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            text-decoration: none;
         }
 
-        .header {
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--gray-600);
+            font-weight: 500;
+            transition: var(--transition-fast);
+            border: 1px solid var(--gray-300);
+            background: white;
+        }
+
+        .nav-btn:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .nav-btn.secondary {
+            color: var(--gray-500);
+            border-color: var(--gray-300);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            padding-top: 100px;
+            padding-bottom: var(--space-3xl);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        /* ===== EDITOR LAYOUT ===== */
+        .editor-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: var(--space-2xl);
+            align-items: start;
+        }
+
+        .editor-main {
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: var(--space-3xl);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+        }
+
+        .editor-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+        }
+
+        .editor-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        /* ===== HEADER ===== */
+        .editor-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: var(--space-3xl);
         }
 
-        .logo {
+        .editor-title {
             font-size: 2.5rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--space-sm);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1rem;
         }
 
-        h1 {
-            color: #333;
-            font-size: 2.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+        .editor-subtitle {
+            font-size: 1.125rem;
+            color: var(--gray-600);
+            margin-bottom: var(--space-xl);
         }
 
-        .subtitle {
-            color: #666;
-            font-size: 1rem;
-            margin-bottom: 2rem;
+        .writing-stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-xl);
+            padding: var(--space-lg);
+            background: var(--gray-50);
+            border-radius: var(--radius-xl);
         }
 
-        /* Form Styles */
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-top: var(--space-xs);
+        }
+
+        /* ===== FORM STYLES ===== */
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: var(--space-2xl);
             position: relative;
         }
 
-        .floating-label {
-            position: relative;
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: var(--space-md);
         }
 
-        .floating-label input,
-        .floating-label textarea {
+        .form-input {
             width: 100%;
-            padding: 1.2rem 1rem 0.8rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.9);
-            outline: none;
-            transition: all 0.3s ease;
+            padding: var(--space-lg);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-xl);
+            font-size: 1.125rem;
             font-family: inherit;
-            resize: vertical;
+            background: var(--gray-50);
+            transition: var(--transition-normal);
+            outline: none;
         }
 
-        .floating-label textarea {
-            min-height: 200px;
-            line-height: 1.6;
-        }
-
-        .floating-label label {
-            position: absolute;
-            left: 1rem;
-            top: 1rem;
-            font-size: 1rem;
-            color: #999;
-            transition: all 0.3s ease;
-            pointer-events: none;
-            background: transparent;
-        }
-
-        .floating-label input:focus,
-        .floating-label input:valid,
-        .floating-label textarea:focus,
-        .floating-label textarea:valid {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        .form-input:focus {
+            border-color: var(--primary-color);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
             transform: translateY(-2px);
         }
 
-        .floating-label input:focus + label,
-        .floating-label input:valid + label,
-        .floating-label textarea:focus + label,
-        .floating-label textarea:valid + label {
-            top: 0.2rem;
-            font-size: 0.8rem;
-            color: #667eea;
-            font-weight: 500;
+        .form-textarea {
+            min-height: 400px;
+            resize: vertical;
+            line-height: 1.7;
+            font-family: var(--font-display);
         }
 
-        /* Character Counter */
         .char-counter {
             position: absolute;
             bottom: -1.5rem;
             right: 0;
-            font-size: 0.8rem;
-            color: #999;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            font-weight: 500;
         }
 
         .char-counter.warning {
-            color: #ffa502;
+            color: var(--warning-color);
         }
 
         .char-counter.danger {
-            color: #ff4757;
+            color: var(--error-color);
         }
 
-        /* Form Actions */
+        /* ===== TOOLBAR ===== */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            background: var(--gray-50);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-lg);
+            flex-wrap: wrap;
+        }
+
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding-right: var(--space-md);
+            border-right: 1px solid var(--gray-300);
+        }
+
+        .toolbar-group:last-child {
+            border-right: none;
+            padding-right: 0;
+        }
+
+        .toolbar-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+
+        .toolbar-btn:hover {
+            background: var(--gray-200);
+            color: var(--gray-800);
+        }
+
+        .toolbar-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* ===== SIDEBAR COMPONENTS ===== */
+        .sidebar-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-lg);
+            border: 1px solid var(--gray-200);
+        }
+
+        .sidebar-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: var(--space-lg);
+        }
+
+        /* ===== PREVIEW CARD ===== */
+        .preview-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            margin-bottom: var(--space-lg);
+        }
+
+        .preview-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .preview-content {
+            display: none;
+            padding: var(--space-lg);
+            background: var(--gray-50);
+            border-radius: var(--radius-lg);
+            border: 2px dashed var(--gray-300);
+        }
+
+        .preview-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .preview-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--space-sm);
+        }
+
+        .preview-meta {
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            margin-bottom: var(--space-lg);
+        }
+
+        .preview-text {
+            color: var(--gray-700);
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        /* ===== STATS CARD ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-md);
+        }
+
+        .stat-card {
+            padding: var(--space-md);
+            background: var(--gray-50);
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-name {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-top: var(--space-xs);
+        }
+
+        /* ===== ACTIONS ===== */
         .form-actions {
             display: flex;
-            gap: 1rem;
+            gap: var(--space-lg);
             justify-content: center;
-            margin-top: 2rem;
+            margin-top: var(--space-3xl);
+            padding-top: var(--space-2xl);
+            border-top: 1px solid var(--gray-200);
         }
 
         .btn {
-            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-lg) var(--space-2xl);
             border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
+            border-radius: var(--radius-xl);
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition-normal);
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
             min-width: 140px;
             justify-content: center;
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: var(--gradient-primary);
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: var(--shadow-xl);
         }
 
         .btn-secondary {
             background: transparent;
-            color: #667eea;
-            border: 2px solid #667eea;
+            color: var(--gray-600);
+            border: 2px solid var(--gray-300);
         }
 
         .btn-secondary:hover {
-            background: #667eea;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .btn:active {
+            background: var(--gray-100);
+            border-color: var(--gray-400);
             transform: translateY(-1px);
         }
 
@@ -200,14 +524,14 @@
             transform: none;
         }
 
-        /* Loading Animation */
-        .loading {
+        /* ===== LOADING STATES ===== */
+        .loading-spinner {
             display: inline-block;
             width: 16px;
             height: 16px;
-            border: 2px solid #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top-color: transparent;
+            border-top-color: white;
             animation: spin 1s ease-in-out infinite;
         }
 
@@ -215,88 +539,97 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Preview Section */
-        .preview-section {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 2rem;
-            margin-top: 2rem;
-            border: 2px dashed #e0e0e0;
-            display: none;
+        /* ===== NOTIFICATIONS ===== */
+        .notification {
+            position: fixed;
+            top: 90px;
+            right: var(--space-lg);
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            box-shadow: var(--shadow-xl);
+            border-left: 4px solid var(--success-color);
+            transform: translateX(400px);
+            transition: var(--transition-normal);
+            z-index: 1001;
         }
 
-        .preview-section.active {
-            display: block;
-            animation: fadeIn 0.3s ease-out;
+        .notification.show {
+            transform: translateX(0);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .notification.error {
+            border-left-color: var(--error-color);
         }
 
-        .preview-header {
+        .notification-content {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #e0e0e0;
+            gap: var(--space-sm);
         }
 
-        .preview-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
-            margin: 0;
+        .notification-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
         }
 
-        .preview-meta {
-            color: #666;
-            font-size: 0.9rem;
+        .notification-icon.success {
+            background: var(--success-color);
         }
 
-        .preview-content {
-            color: #444;
-            line-height: 1.7;
-            font-size: 1rem;
-            white-space: pre-wrap;
+        .notification-icon.error {
+            background: var(--error-color);
         }
 
-        /* Success/Error Messages */
-        .message {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            display: none;
+        .notification-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
         }
 
-        .message.error {
-            background: #fee;
-            color: #c33;
-            border: 1px solid #fcc;
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .editor-layout {
+                grid-template-columns: 1fr;
+                gap: var(--space-xl);
+            }
+
+            .editor-sidebar {
+                position: static;
+                order: -1;
+            }
+
+            .sidebar-card {
+                display: none;
+            }
+
+            .sidebar-card:first-child {
+                display: block;
+            }
         }
 
-        .message.success {
-            background: #efe;
-            color: #363;
-            border: 1px solid #cfc;
-        }
-
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .blog-container {
-                padding: 2rem 1.5rem;
-                margin: 10px;
+            .container {
+                padding: 0 var(--space-md);
             }
-            
-            h1 {
-                font-size: 1.8rem;
+
+            .editor-main {
+                padding: var(--space-xl);
             }
-            
-            .logo {
+
+            .editor-title {
                 font-size: 2rem;
+            }
+
+            .writing-stats {
+                flex-direction: column;
+                gap: var(--space-md);
             }
 
             .form-actions {
@@ -307,289 +640,295 @@
                 width: 100%;
             }
 
-            .floating-label textarea {
-                min-height: 150px;
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .toolbar-group {
+                border-right: none;
+                border-bottom: 1px solid var(--gray-300);
+                padding-bottom: var(--space-md);
+                margin-bottom: var(--space-md);
+            }
+
+            .toolbar-group:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
             }
         }
 
-        /* Auto-save indicator */
-        .auto-save {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(40, 167, 69, 0.9);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .auto-save.show {
-            opacity: 1;
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Toolbar */
-        .toolbar {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            padding: 0.5rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            flex-wrap: wrap;
+        .editor-main {
+            animation: slideIn 0.6s ease-out;
         }
 
-        .toolbar-btn {
-            padding: 0.5rem;
-            border: none;
-            background: transparent;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            font-size: 0.9rem;
-            color: #666;
+        .sidebar-card {
+            animation: fadeIn 0.4s ease-out;
         }
 
-        .toolbar-btn:hover {
-            background: #e9ecef;
-        }
-
-        .toolbar-btn.active {
-            background: #667eea;
-            color: white;
-        }
+        .sidebar-card:nth-child(2) { animation-delay: 0.1s; }
+        .sidebar-card:nth-child(3) { animation-delay: 0.2s; }
     </style>
 </head>
 <body>
-    <div class="blog-container">
-        <div class="header">
-            <div class="logo">BlogSpace</div>
-            <h1>Create New Post</h1>
-            <p class="subtitle">Share your thoughts and ideas with the world</p>
-        </div>
-
-        <div class="message" id="messageContainer"></div>
-
-        <form action="{% url 'add_blog' %}" method="POST" id="blogForm">
-            {% csrf_token %}
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-feather-alt"></i>
+                </div>
+                <h1 class="brand-text">InkWell</h1>
+            </a>
             
-            <div class="form-group">
-                <div class="floating-label">
-                    <input type="text" name="title" id="title" required maxlength="200">
-                    <label for="title">Blog Title</label>
-                </div>
-                <div class="char-counter" id="titleCounter">0/200</div>
+            <div class="nav-actions">
+                <a href="{% url 'home' %}" class="nav-btn secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back</span>
+                </a>
+                <a href="#" class="nav-btn">
+                    <i class="fas fa-save"></i>
+                    <span>Save Draft</span>
+                </a>
             </div>
+        </div>
+    </nav>
 
-            <div class="form-group">
-                <div class="toolbar">
-                    <button type="button" class="toolbar-btn" onclick="togglePreview()">👁️ Preview</button>
-                    <button type="button" class="toolbar-btn" onclick="clearForm()">🗑️ Clear</button>
-                    <button type="button" class="toolbar-btn" onclick="saveDraft()">💾 Save Draft</button>
-                </div>
-                <div class="floating-label">
-                    <textarea name="content" id="content" required maxlength="10000" placeholder=" "></textarea>
-                    <label for="content">Blog Content</label>
-                </div>
-                <div class="char-counter" id="contentCounter">0/10000</div>
-            </div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="editor-layout">
+                <!-- Main Editor -->
+                <div class="editor-main">
+                    <div class="editor-header">
+                        <h1 class="editor-title">Create Your Story</h1>
+                        <p class="editor-subtitle">Share your thoughts and inspire others with your words</p>
+                        
+                        <div class="writing-stats">
+                            <div class="stat-item">
+                                <div class="stat-number" id="wordCount">0</div>
+                                <div class="stat-label">Words</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="charCount">0</div>
+                                <div class="stat-label">Characters</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="readTime">0</div>
+                                <div class="stat-label">Min Read</div>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="preview-section" id="previewSection">
-                <div class="preview-header">
-                    <h2 class="preview-title" id="previewTitle">Your Blog Title</h2>
-                    <div class="preview-meta">
-                        <span id="previewDate"></span> • <span id="wordCount">0 words</span>
+                    
+                    <form action="{% url 'add_blog' %}" method="POST" id="blogForm">
+                        {% csrf_token %}
+                        
+                        <!-- Title Input -->
+                        <div class="form-group">
+                            <label class="form-label" for="title">
+                                <i class="fas fa-heading"></i>
+                                Story Title
+                            </label>
+                            <input 
+                                type="text" 
+                                name="title" 
+                                id="title" 
+                                class="form-input" 
+                                placeholder="Enter your story title..."
+                                required 
+                                maxlength="200"
+                            >
+                            <div class="char-counter" id="titleCounter">0/200</div>
+                        </div>
+
+                        <!-- Content Toolbar -->
+                        <div class="toolbar">
+                            <div class="toolbar-group">
+                                <button type="button" class="toolbar-btn" onclick="togglePreview()">
+                                    <i class="fas fa-eye"></i>
+                                    <span>Preview</span>
+                                </button>
+                                <button type="button" class="toolbar-btn" onclick="toggleFullscreen()">
+                                    <i class="fas fa-expand"></i>
+                                    <span>Focus</span>
+                                </button>
+                            </div>
+                            <div class="toolbar-group">
+                                <button type="button" class="toolbar-btn" onclick="saveDraft()">
+                                    <i class="fas fa-save"></i>
+                                    <span>Save</span>
+                                </button>
+                                <button type="button" class="toolbar-btn" onclick="clearForm()">
+                                    <i class="fas fa-trash"></i>
+                                    <span>Clear</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Content Input -->
+                        <div class="form-group">
+                            <label class="form-label" for="content">
+                                <i class="fas fa-pen"></i>
+                                Story Content
+                            </label>
+                            <textarea 
+                                name="content" 
+                                id="content" 
+                                class="form-input form-textarea" 
+                                placeholder="Start writing your story here... Let your creativity flow!"
+                                required 
+                                maxlength="10000"
+                            ></textarea>
+                            <div class="char-counter" id="contentCounter">0/10000</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="tags">
+                                <i class="fas fa-heading"></i>
+                                Tags 
+                            </label>
+                            <input 
+                                type="text" 
+                                name="tags" 
+                                id="tags" 
+                                class="form-input" 
+                                placeholder="Enter your Tags..." 
+                                maxlength="200"
+                            >
+                            <div class="char-counter" id="titleCounter">Max 3</div>
+                        </div>
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="goBack()">
+                                <i class="fas fa-times"></i>
+                                <span>Cancel</span>
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <span id="btnText">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Publish Story
+                                </span>
+                                <div class="loading-spinner" id="loading" style="display: none;"></div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="editor-sidebar">
+                    <!-- Preview Card -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-eye"></i>
+                            Live Preview
+                        </h3>
+                        <button class="preview-toggle" onclick="togglePreview()">
+                            <i class="fas fa-eye"></i>
+                            <span>Toggle Preview</span>
+                        </button>
+                        <div class="preview-content" id="previewContent">
+                            <h4 class="preview-title" id="previewTitle">Your Story Title</h4>
+                            <div class="preview-meta" id="previewMeta">
+                                <span id="previewDate"></span> • <span id="previewReadTime">0 min read</span>
+                            </div>
+                            <div class="preview-text" id="previewText">Your story content will appear here as you type...</div>
+                        </div>
+                    </div>
+
+                    <!-- Writing Stats -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-chart-line"></i>
+                            Writing Stats
+                        </h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="paragraphCount">0</div>
+                                <div class="stat-name">Paragraphs</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="sentenceCount">0</div>
+                                <div class="stat-name">Sentences</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Writing Tips -->
+                    <div class="sidebar-card">
+                        <h3 class="sidebar-title">
+                            <i class="fas fa-lightbulb"></i>
+                            Writing Tips
+                        </h3>
+                        <div style="color: var(--gray-600); font-size: 0.875rem; line-height: 1.6;">
+                            <p style="margin-bottom: var(--space-sm);">• Keep your title engaging and descriptive</p>
+                            <p style="margin-bottom: var(--space-sm);">• Use short paragraphs for better readability</p>
+                            <p style="margin-bottom: var(--space-sm);">• Tell a story that resonates with your audience</p>
+                            <p>• Use <kbd style="background: var(--gray-100); padding: 2px 4px; border-radius: 4px;">Ctrl+S</kbd> to save drafts</p>
+                        </div>
                     </div>
                 </div>
-                <div class="preview-content" id="previewContent">Your blog content will appear here...</div>
             </div>
+        </div>
+    </main>
 
-            <div class="form-actions">
-                <button type="button" class="btn btn-secondary" onclick="goBack()">
-                    ← Cancel
-                </button>
-                <button type="submit" class="btn btn-primary" id="submitBtn">
-                    <span id="btnText">Publish Post</span>
-                    <div class="loading" id="loading" style="display: none;"></div>
-                </button>
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <div class="notification-icon success" id="notificationIcon">
+                <i class="fas fa-check"></i>
             </div>
-        </form>
+            <div class="notification-text" id="notificationText">Draft saved successfully!</div>
+        </div>
     </div>
 
-    <div class="auto-save" id="autoSave">Draft saved automatically</div>
-
     <script>
+        // DOM Elements
         const titleInput = document.getElementById('title');
         const contentInput = document.getElementById('content');
         const titleCounter = document.getElementById('titleCounter');
         const contentCounter = document.getElementById('contentCounter');
-        const previewSection = document.getElementById('previewSection');
-        const previewTitle = document.getElementById('previewTitle');
-        const previewContent = document.getElementById('previewContent');
-        const previewDate = document.getElementById('previewDate');
         const wordCount = document.getElementById('wordCount');
+        const charCount = document.getElementById('charCount');
+        const readTime = document.getElementById('readTime');
+        const paragraphCount = document.getElementById('paragraphCount');
+        const sentenceCount = document.getElementById('sentenceCount');
+        const previewContent = document.getElementById('previewContent');
+        const previewTitle = document.getElementById('previewTitle');
+        const previewText = document.getElementById('previewText');
+        const previewDate = document.getElementById('previewDate');
+        const previewReadTime = document.getElementById('previewReadTime');
         const form = document.getElementById('blogForm');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
         const loading = document.getElementById('loading');
-        const messageContainer = document.getElementById('messageContainer');
-        const autoSave = document.getElementById('autoSave');
+        const notification = document.getElementById('notification');
+        const notificationIcon = document.getElementById('notificationIcon');
+        const notificationText = document.getElementById('notificationText');
 
         let previewMode = false;
         let autoSaveTimeout;
 
-        // Set current date
-        previewDate.textContent = new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
+        // Initialize
+        updatePreviewDate();
+        updateStats();
 
-        // Character counters
-        titleInput.addEventListener('input', function() {
-            const count = this.value.length;
-            titleCounter.textContent = `${count}/200`;
-            
-            if (count > 180) titleCounter.className = 'char-counter danger';
-            else if (count > 150) titleCounter.className = 'char-counter warning';
-            else titleCounter.className = 'char-counter';
-            
-            updatePreview();
-            scheduleAutoSave();
-        });
-
-        contentInput.addEventListener('input', function() {
-            const count = this.value.length;
-            contentCounter.textContent = `${count}/10000`;
-            
-            if (count > 9000) contentCounter.className = 'char-counter danger';
-            else if (count > 8000) contentCounter.className = 'char-counter warning';
-            else contentCounter.className = 'char-counter';
-            
-            updatePreview();
-            scheduleAutoSave();
-        });
-
-        // Update preview
-        function updatePreview() {
-            const title = titleInput.value || 'Your Blog Title';
-            const content = contentInput.value || 'Your blog content will appear here...';
-            
-            previewTitle.textContent = title;
-            previewContent.textContent = content;
-            
-            // Word count
-            const words = content.trim() ? content.trim().split(/\s+/).length : 0;
-            wordCount.textContent = `${words} words`;
-        }
-
-        // Toggle preview
-        function togglePreview() {
-            previewMode = !previewMode;
-            previewSection.classList.toggle('active', previewMode);
-            
-            const toolbar = document.querySelector('.toolbar-btn');
-            if (previewMode) {
-                toolbar.classList.add('active');
-                updatePreview();
-            } else {
-                toolbar.classList.remove('active');
-            }
-        }
-
-        // Form submission
-        form.addEventListener('submit', function(e) {
-            if (!titleInput.value.trim() || !contentInput.value.trim()) {
-                e.preventDefault();
-                showMessage('Please fill in both title and content fields.', 'error');
-                return;
-            }
-
-            // Show loading state
-            submitBtn.disabled = true;
-            btnText.style.display = 'none';
-            loading.style.display = 'inline-block';
-        });
-
-        // Auto-save functionality
-        function scheduleAutoSave() {
-            clearTimeout(autoSaveTimeout);
-            autoSaveTimeout = setTimeout(saveDraft, 3000); // Auto-save after 3 seconds of inactivity
-        }
-
-        function saveDraft() {
-            if (!titleInput.value && !contentInput.value) return;
-            
-            // Save to localStorage (or send to backend in real implementation)
-            const draft = {
-                title: titleInput.value,
-                content: contentInput.value,
-                timestamp: new Date().toISOString()
-            };
-            
-            try {
-                // In a real app, you'd send this to your backend
-                console.log('Draft saved:', draft);
-                showAutoSave();
-            } catch (error) {
-                console.error('Failed to save draft:', error);
-            }
-        }
-
-        function showAutoSave() {
-            autoSave.classList.add('show');
-            setTimeout(() => {
-                autoSave.classList.remove('show');
-            }, 2000);
-        }
-
-        // Clear form
-        function clearForm() {
-            if (confirm('Are you sure you want to clear all content? This action cannot be undone.')) {
-                titleInput.value = '';
-                contentInput.value = '';
-                titleCounter.textContent = '0/200';
-                contentCounter.textContent = '0/10000';
-                titleCounter.className = 'char-counter';
-                contentCounter.className = 'char-counter';
-                updatePreview();
-            }
-        }
-
-        // Go back
-        function goBack() {
-            if (titleInput.value || contentInput.value) {
-                if (confirm('You have unsaved changes. Are you sure you want to leave?')) {
-                    window.history.back();
-                }
-            } else {
-                window.history.back();
-            }
-        }
-
-        // Show messages
-        function showMessage(message, type) {
-            messageContainer.textContent = message;
-            messageContainer.className = `message ${type}`;
-            messageContainer.style.display = 'block';
-            
-            setTimeout(() => {
-                messageContainer.style.display = 'none';
-            }, 5000);
-        }
-
-        // Enhanced floating labels
-        document.querySelectorAll('.floating-label input, .floating-label textarea').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.style.transform = 'scale(1.01)';
-            });
-            
-            input.addEventListener('blur', function() {
-                this.parentElement.style.transform = 'scale(1)';
-            });
-        });
+        // Event Listeners
+        titleInput.addEventListener('input', handleTitleInput);
+        contentInput.addEventListener('input', handleContentInput);
+        form.addEventListener('submit', handleFormSubmit);
 
         // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
@@ -607,8 +946,158 @@
             }
         });
 
-        // Initialize
-        updatePreview();
+        // Functions
+        function handleTitleInput() {
+            const count = this.value.length;
+            titleCounter.textContent = `${count}/200`;
+            
+            if (count > 180) titleCounter.className = 'char-counter danger';
+            else if (count > 150) titleCounter.className = 'char-counter warning';
+            else titleCounter.className = 'char-counter';
+            
+            updatePreview();
+            scheduleAutoSave();
+        }
+
+        function handleContentInput() {
+            const count = this.value.length;
+            contentCounter.textContent = `${count}/10000`;
+            
+            if (count > 9000) contentCounter.className = 'char-counter danger';
+            else if (count > 8000) contentCounter.className = 'char-counter warning';
+            else contentCounter.className = 'char-counter';
+            
+            updateStats();
+            updatePreview();
+            scheduleAutoSave();
+        }
+
+        function updateStats() {
+            const content = contentInput.value;
+            const words = content.trim() ? content.trim().split(/\s+/).length : 0;
+            const chars = content.length;
+            const paragraphs = content.trim() ? content.split(/\n\s*\n/).length : 0;
+            const sentences = content.trim() ? content.split(/[.!?]+/).filter(s => s.trim().length > 0).length : 0;
+            const readTimeMinutes = Math.ceil(words / 200) || 0;
+
+            wordCount.textContent = words;
+            charCount.textContent = chars;
+            readTime.textContent = readTimeMinutes;
+            paragraphCount.textContent = paragraphs;
+            sentenceCount.textContent = sentences;
+            previewReadTime.textContent = `${readTimeMinutes} min read`;
+        }
+
+        function updatePreview() {
+            const title = titleInput.value || 'Your Story Title';
+            const content = contentInput.value || 'Your story content will appear here as you type...';
+            
+            previewTitle.textContent = title;
+            previewText.textContent = content;
+        }
+
+        function updatePreviewDate() {
+            const now = new Date();
+            previewDate.textContent = now.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function togglePreview() {
+            previewMode = !previewMode;
+            previewContent.classList.toggle('active', previewMode);
+            updatePreview();
+        }
+
+        function toggleFullscreen() {
+            document.body.classList.toggle('fullscreen-mode');
+        }
+
+        function scheduleAutoSave() {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(saveDraft, 3000);
+        }
+
+        function saveDraft() {
+            if (!titleInput.value && !contentInput.value) return;
+            
+            const draft = {
+                title: titleInput.value,
+                content: contentInput.value,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Save to localStorage (in real app, send to backend)
+            localStorage.setItem('blogDraft', JSON.stringify(draft));
+            showNotification('Draft saved successfully!', 'success');
+        }
+
+        function clearForm() {
+            if (titleInput.value || contentInput.value) {
+                if (confirm('Are you sure you want to clear all content? This action cannot be undone.')) {
+                    titleInput.value = '';
+                    contentInput.value = '';
+                    updateStats();
+                    updatePreview();
+                    titleCounter.textContent = '0/200';
+                    contentCounter.textContent = '0/10000';
+                    titleCounter.className = 'char-counter';
+                    contentCounter.className = 'char-counter';
+                }
+            }
+        }
+
+        function goBack() {
+            if (titleInput.value || contentInput.value) {
+                if (confirm('You have unsaved changes. Are you sure you want to leave?')) {
+                    window.history.back();
+                }
+            } else {
+                window.history.back();
+            }
+        }
+
+        function handleFormSubmit(e) {
+            if (!titleInput.value.trim() || !contentInput.value.trim()) {
+                e.preventDefault();
+                showNotification('Please fill in both title and content fields.', 'error');
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            loading.style.display = 'inline-block';
+        }
+
+        function showNotification(message, type) {
+            notificationText.textContent = message;
+            notificationIcon.className = `notification-icon ${type}`;
+            notificationIcon.innerHTML = type === 'success' ? '<i class="fas fa-check"></i>' : '<i class="fas fa-exclamation"></i>';
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Load draft on page load
+        window.addEventListener('load', function() {
+            const savedDraft = localStorage.getItem('blogDraft');
+            if (savedDraft) {
+                const draft = JSON.parse(savedDraft);
+                if (confirm('You have a saved draft. Would you like to restore it?')) {
+                    titleInput.value = draft.title || '';
+                    contentInput.value = draft.content || '';
+                    updateStats();
+                    updatePreview();
+                    handleTitleInput.call(titleInput);
+                    handleContentInput.call(contentInput);
+                }
+            }
+        });
     </script>
 </body>
 </html>
